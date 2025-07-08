@@ -7,7 +7,7 @@ add user user123
 
 # Add the user to sudo group 
 usermod -aG sudo user123
-su - user123
+su - user123 
 
 
 # To block root access thru ssh: 
