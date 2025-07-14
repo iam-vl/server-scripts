@@ -24,10 +24,10 @@ pip install flask psycopg2-binary python-dotenv
 ```sh  
 psql -U postgres -d pgr_shortener -f migrations.sql
 ```   
-3. Create a Flask app (`app.py`): 
-    3.1. Set up a basic Flask app. 
-    3.2. Shorten the URL. 
-    3.3. Provide a redirect for the original page. 
+3. Create a Flask app (`app.py`):  
+    3.1. Set up a basic Flask app.  
+    3.2. Shorten the URL.  
+    3.3. Provide a redirect for the original page.  
 
 <details>
     <summary>How to set up a basic Flask app: </summary>
