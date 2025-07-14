@@ -37,6 +37,8 @@ Files to build (prliminary plan):
 
 ## Planned steps 
 
+Let's break the project in chunks: 
+
 1. Basic shortener: Anonymous users create short links.
 2. Delete Links + Expiry  
 3. Authorization: Email signup + Google OAuth
