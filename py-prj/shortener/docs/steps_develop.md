@@ -53,12 +53,42 @@ psql -U postgres -d pgr_shortener -f migrations.sql
 
     @app.route('/', methods=['GET', 'POST']) # Ne
     def home():
+        if method == 'POST': 
+            pass
         return render_template('index.html')
 
     if __name__ == '__main__':
         app.run(debug=True)
     ```
 </details>
+
+<details>
+    <summary>Показать логику для `/`: </summary>  
+
+```py
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    # Ксли метод POST: 
+        # извлекаем оригинальный урл
+        # Если некорректные данные, возврат ошибка 400 
+        # Считаем short id, считаем expiry date 
+        # try основная бизнес логика:  
+        try:
+            # Получаем коннекшн 
+            # прогоняем запрос через курсор (conn.cursor())
+            with conn.cursor() as cur:
+                cur.execute(
+                    sql.SQL("INSERT INTO urls (id, original, expires_at) VALUES (%s, %s, %s)"),
+                    (short_id, original_url, expires_at)
+                )
+            # Коммитим 
+            # Формируем урл: хост + id
+            # Возвращаем темплейт с новой ссылкой 
+        # в случае исключений: ошибка 500 
+    # Если метод GET, возвращаем пустой шаблон
+```
+</details>
+
 
 
 

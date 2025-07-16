@@ -6,7 +6,7 @@
 
 ## Initial planning 
 
-Shortnr is a learning project that will produce a URL shortener. Initial requirements: 
+Shortener is a learning project that will produce a URL shortener. Initial requirements: 
 
 1. Can log in with Google, can sign in/sign up with email 
 2. Can keep browser sessions for 30 days since previous visit 
