@@ -4,17 +4,6 @@
 
 Goal: Anon users can create/share short links via a web form or API.
 
-> **INFO**  
-> How to enter the Docker postgresql shell:  
-> `docker exec -it postgres1 psql -U postgres`  
-> How to create db s on Docker:  
-> `docker exec -it postgres1 psql -U postgres -c "CREATE DATABASE pgr_shortener;"`  
-> Ноw to run the migrations on Docker: 
-> 1. Copy the migrations file into the container:  
-> `docker cp migrations.sql postgres1:/migration.sql` 
-> 2. Execute the migrations inside the container: 
-> `docker exec -it psql -U postgres -d pgr_shortener -f /migrations.sql`
-
 Steps:   
 1. Prep: Create folders, create  / activate a venv, install the dependencies:  
 ```sh
@@ -126,30 +115,5 @@ def redirect_to_original(short_id):
 
 
 
-## Project chunk 2:
-
-Goal:   
-
-Steps:   
-1.  
-2. 
-
-
-## Project chunk 3:
-
-Goal:   
-
-Steps:   
-1.  
-2. 
-
-
-## Project chunk 4:
-
-Goal:   
-
-Steps:   
-1.  
-2. 
 
 

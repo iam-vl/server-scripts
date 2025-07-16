@@ -1,8 +1,8 @@
 # PLAN: URL Shortener with Python & Flask 
 
-## Lean more
+## Learn more
 
-* [Development steps](./steps_develop.md)
+
 
 ## Initial planning 
 
@@ -50,3 +50,15 @@ Possible enhancements:
 * QR code endpoint 
 * Export links to CSV 
 
+## Technical info   
+
+> **INFO**  
+> How to enter the Docker postgresql shell:  
+> `docker exec -it postgres1 psql -U postgres`  
+> How to create db s on Docker:  
+> `docker exec -it postgres1 psql -U postgres -c "CREATE DATABASE pgr_shortener;"`  
+> Ноw to run the migrations on Docker: 
+> 1. Copy the migrations file into the container:  
+> `docker cp migrations.sql postgres1:/migration.sql` 
+> 2. Execute the migrations inside the container: 
+> `docker exec -it psql -U postgres -d pgr_shortener -f /migrations.sql`
