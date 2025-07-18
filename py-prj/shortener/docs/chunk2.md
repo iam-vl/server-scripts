@@ -18,9 +18,10 @@ def delete_url(short_id: str, token:str) -> bool:
     return True # True if deleted, False if invalid 
 ```
 
-Add / update the routes: 
+Add / update the routes (`app.py`): 
 
 ```py 
+from urllib.oarse import quote
 @app.route('/', methods=['GET', 'POST'])
 def home():
     pass 

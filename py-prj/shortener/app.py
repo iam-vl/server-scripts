@@ -1,14 +1,16 @@
-import os, psycopg2, string 
-import creds
+import os
 from flask import Flask, render_template 
 
-import random
-from datetime import datetime, timedelta
+# import random
+# from datetime import datetime, timedelta
 from psycopg2 import sql 
 from flask import request 
 
 from flask import redirect 
 
+# for the delete link - chunk 2
+from urllib.parse import quote
+import models
 
 
 INSERT_URL_QUERY = "INSERT INTO urls (id, original, expires_at) VALUES (%s, %s, %s)"
@@ -16,42 +18,17 @@ INSERT_URL_QUERY = "INSERT INTO urls (id, original, expires_at) VALUES (%s, %s, 
 app = Flask(__name__)
 # See https://flask.palletsprojects.com/en/stable/config/#SECRET_KEY
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-default') 
-def get_db_conn():
-    print("Getting db conn....")
-    conn = psycopg2.connect(
-        dbname=os.getenv('DB_NAME', 'pgr_shortener'), 
-        user=os.getenv('DB_USER', 'postgres'),
-        password=os.getenv('DB_PASSWORD', creds.db_password),
-        host=os.getenv('DB_HOST', 'localhost'),
-        port=os.getenv('PORT', '5431')
-    )
-    print(type(conn))
-    return conn
 
-def generate_short_id(length=6):
-    chars = string.ascii_letters + string.digits
-    return ''.join(random.choice(chars) for _ in range(length))  
+
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == "POST":
         original_url = request.form.get('url')
-        if not original_url:
-            return "This form requires a correct URL", 400
-        short_id = generate_short_id() 
-        expiry_date = datetime.now() + timedelta(days=45)
-        try: 
-            conn = get_db_conn()
-            with conn.cursor() as cur:
-                cur.execute(
-                    sql.SQL("INSERT INTO urls (id, original, expires_at) VALUES (%s, %s, %s)"),
-                    (short_id, original_url, expiry_date)
-                )
-            conn.commit()
-            new_url = f"{request.host_url}{short_id}"
-            return render_template('index.html', short_url=new_url)
-        except Exception as e:
-            return f"Error: {e}", 500
+        short_id, delete_token = models.create_url(original_url)
+        short_url = f"{request.host_url}{short_id}"
+        delete_link = f"{request.host_url}delete/{short_id}/{quote(delete_token)}"
+        return render_template('index.html', short_url=short_url, delete_link=delete_link)
     return render_template('index.html')
 
 @app.route('/<short_id>')
@@ -70,7 +47,11 @@ def redirect_to_original(short_id):
     except Exception as e:
         return f"Erroe: {e}", 500
 
-
+@app.route("/delete/<short_id>/<token>")
+def delete(short_id, token):
+    if models.delete_url(short_id, token):
+        return "Link deleted"
+    return "Invalid token or id", 404
 
 if __name__ == '__main__':
     app.run(debug=True)
