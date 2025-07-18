@@ -4,3 +4,4 @@ CREATE TABLE urls (
     created_at TIMESTAMPTZ DEFAULT NOW(),
     expires_at TIMESTAMPTZ
 );
+ALTER TABLE urls ADD COLUMN delete_token TEXT;
