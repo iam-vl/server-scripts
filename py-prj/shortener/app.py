@@ -14,8 +14,6 @@ from models import create_url
 import models
 
 
-
-
 INSERT_URL_QUERY = "INSERT INTO urls (id, original, expires_at) VALUES (%s, %s, %s)"
 
 app = Flask(__name__)
