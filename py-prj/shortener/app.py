@@ -10,7 +10,10 @@ from flask import redirect
 
 # for the delete link - chunk 2
 from urllib.parse import quote
+from models import create_url
 import models
+
+
 
 
 INSERT_URL_QUERY = "INSERT INTO urls (id, original, expires_at) VALUES (%s, %s, %s)"
@@ -25,7 +28,7 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-default')
 def home():
     if request.method == "POST":
         original_url = request.form.get('url')
-        short_id, delete_token = models.create_url(original_url)
+        short_id, delete_token = create_url(original_url)
         short_url = f"{request.host_url}{short_id}"
         delete_link = f"{request.host_url}delete/{short_id}/{quote(delete_token)}"
         return render_template('index.html', short_url=short_url, delete_link=delete_link)

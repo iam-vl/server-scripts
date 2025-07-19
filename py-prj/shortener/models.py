@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from tools import generate_short_id
 
 from dbconfig import get_db_conn
+
 def create_url(original_url: str) -> tuple[str, str]:
     short_id = generate_short_id()
     delete_token = generate_short_id(16)
@@ -16,11 +17,14 @@ def create_url(original_url: str) -> tuple[str, str]:
     return short_id, delete_token 
 
 def delete_url(short_id: str, delete_token: str) -> bool:
+    print(1)
     conn = get_db_conn()
+    print(2)
     with conn.cursor() as cur:
         cur.execute(
             "DELETE FROM urls WHERE ID = %s AND delete_token = %s",
             (short_id, delete_token)            
         )
+    print(3)
     conn.commit()
     return cur.rowcount > 0 # True if deleted, False otherwise 
