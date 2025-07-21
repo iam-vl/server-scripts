@@ -14,7 +14,7 @@ def load_user(user_id):
     print("Loading user...")
     conn = get_db_conn()
     with conn.cursor() as cur:
-        cur.execute("SELECT id, email FROM users WHERE user_id = %s", (user_id,))
+        cur.execute("SELECT id, email FROM users WHERE id = %s", (user_id,))
         user_data = cur.fetchone()
         print(f"User data: {user_data}\t Type: {type(user_data)}")
         return User(*user_data) if user_data else None

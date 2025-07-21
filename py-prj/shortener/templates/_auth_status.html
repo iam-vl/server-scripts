@@ -1,0 +1,14 @@
+<!-- templates/_auth_status.html -->
+{% if current_user.is_authenticated %}
+  <p>
+    Logged in as {{ current_user.email }}. Links expire in 90 days. <br>
+    <p><a href="/dashboard">View Your Links</a></p>
+    <p><a href="/logout">Logout</a></p>
+  </p>
+{% else %}
+  <p>
+    Not logged in. Links expire in 45 days. 
+    <p><a href="/login">Login</a></p>
+    <p><a href="/register">Register</a></p>
+  </p>
+{% endif %}
