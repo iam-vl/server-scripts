@@ -90,10 +90,10 @@ def delete(short_id, token):
         return "Link deleted"
     return "Invalid token or id", 404 
 
-@app.route('dashboard')
+@app.route('/dashboard')
 @login_required
 def dashboard(): 
-    user_urls = models.get_user_urls(current_user.id)
+    user_urls = models.get_user_urls(current_user.id)    
     return render_template('dashboard.html', urls=user_urls)
 
 if __name__ == '__main__':

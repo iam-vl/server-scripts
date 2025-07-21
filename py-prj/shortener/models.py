@@ -37,7 +37,7 @@ def get_user_urls(user_id: str) -> list[dict]:
     with conn.cursor() as cur: 
         cur.execute(
             """
-            SELECT id, original, created_at, expires_at
+            SELECT id, original, created_at, expires_at, delete_token
             FROM urls 
             WHERE user_id = %s
             ORDER BY created_at DESC;
@@ -45,5 +45,13 @@ def get_user_urls(user_id: str) -> list[dict]:
             (user_id,)
         )
         columns = [desc[0] for desc in cur.description] # Get col names 
-        return [dict(zip(columns, rows)) for row in cur.fetchall()]
+        curdata = cur.fetchall()
+        # print("================")
+        # for r in curdata: 
+        #     print(type(r))
+        #     print(r)
+        #     print("---")
+        # print("================")        
+        return [dict(zip(columns, row)) for row in curdata]
+        # return [dict(zip(columns, row)) for row in cur.fetchall()]
 
