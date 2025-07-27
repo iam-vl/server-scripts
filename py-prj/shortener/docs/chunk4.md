@@ -8,13 +8,13 @@ def get_user_urls(user_id: str) -> list[dict]:
     with conn.cursor() as cur: 
         cur.execute(
             """
-            SELECT id, original, created_at, expires_at FROM urls 
+            SELECT id, original, created_at, expires_at, delete_token FROM urls 
             WHERE user_id = %s ORDER BY created_at DESC;
             """,
             (user_id,)
         )
         columns = [desc[0] for desc in cur.description] # Get col names 
-        return [dict(zip(columns, rows)) for row in cur.fetchall()]
+        return [dict(zip(columns, row)) for row in cur.fetchall()]
 ```
 
 Add the dash route to `app.py`:  
@@ -31,5 +31,11 @@ Add the link to index:
 ```
 Add the template: `dashboard.html`. 
 
-```html
-```
+Add the navigattion to index:  
+```html 
+{% if current_user.is_authenticated %}
+  <p>
+    <p><a href="/dashboard">View Your Links</a></p>
+  </p>
+{% else %}
+```  

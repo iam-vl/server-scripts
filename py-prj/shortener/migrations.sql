@@ -14,3 +14,8 @@ CREATE TABLE users (
 );
 -- Link urls to users
 ALTER TABLE urls ADD COLUMN user_id INTEGER REFERENCES users(id);
+
+-- Chunk 5: email verification
+ALTER TABLE users 
+ADD COLUMN is_verified BOOLEAN DEFAULT FALSE 
+ADD COLUMN verification_token TEXT;

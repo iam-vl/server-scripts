@@ -5,8 +5,8 @@ from flask import Flask, render_template
 # from datetime import datetime, timedelta
 from psycopg2 import sql 
 from flask import request 
-
-from flask import redirect 
+from flask import redirect
+from dbconfig import get_db_conn 
 
 # for the delete link - chunk 2
 from urllib.parse import quote
@@ -16,7 +16,10 @@ import models
 # Adding email login/ logout routes 
 from flask_login import login_user, logout_user, login_required, current_user 
 from auth import create_user, verify_user, login_manager 
-from dbconfig import get_db_conn
+
+# Add email automation 
+
+
 
 
 INSERT_URL_QUERY = "INSERT INTO urls (id, original, expires_at) VALUES (%s, %s, %s)"
