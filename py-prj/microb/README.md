@@ -45,3 +45,16 @@ pip install python-dotenv
 touch .flaskenv
 ```
 Flaskenv:  `FLASK_APP=microb.py` 
+
+## CH02 Templates 
+
+Create /app/templates/index.html
+```
+    <head>
+        <title>{{ title }} - Microblog</title>
+    </head>
+    <body>
+        <h1>Hello, {{ user.username }}!</h1>
+    </body>
+```
+
