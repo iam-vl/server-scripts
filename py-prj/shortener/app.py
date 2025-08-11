@@ -18,8 +18,8 @@ from flask_login import login_user, logout_user, login_required, current_user
 from auth import create_user, verify_user, login_manager 
 
 # Add email automation 
-
-
+import logging 
+from auth import verify_token, generate_verification_token 
 
 
 INSERT_URL_QUERY = "INSERT INTO urls (id, original, expires_at) VALUES (%s, %s, %s)"
@@ -37,6 +37,11 @@ def register():
         email = request.form.get('email')
         password = request.form.get('password')
         user = create_user(email, password)
+        # Generate the verif link 
+        token = generate_verification_token(email)
+        verif_url = f"{request.host_url}verify/{token}"
+        mock_send_verification_email(email, verif_url)
+        
         login_user(user)
         return redirect('/')
     return render_template('register.html')
@@ -98,6 +103,42 @@ def delete(short_id, token):
 def dashboard(): 
     user_urls = models.get_user_urls(current_user.id)    
     return render_template('dashboard.html', urls=user_urls)
+
+logging.basicConfig(
+    filename = 'email_simulator.log',
+    level = logging.INFO,
+    format= '%(asctime)s - %(message)s'
+)
+
+# Verficatio endpoint 
+@app.route('/verify/<token>')
+def verify_email(token):
+    email = verify_token(token)
+    if email:
+        conn = get_db_conn()
+        with conn.cursor() as cur:
+            cur.execute(
+                "UPDATE users SET is_verified = TRUE WHERE email = %s",
+                (email, )
+            )
+            conn.commit()
+        return "Email verified! You can now enjoy full access"
+    return "Invalid of expired token", 400 
+
+def mock_send_verification_email(email, verification_url):
+    """Simulate email sending by logging to console/file"""
+    msg = f"""
+    ===== MOCK EMAIL =====
+    To: {email}
+    Subject: Verify Your Email
+    
+    Please click to verify:
+    {verification_url}
+    ======================
+    """
+    print(msg)  # Print to console
+    logging.info(msg)  # Log to file
+
 
 if __name__ == '__main__':
     app.run(debug=True)
